@@ -1,28 +1,51 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
+// import React, { useState } from "react";
 
 const BlogContext = React.createContext();
 // this is object will guide informtation from Parent BlogPostProvider to  BlogList, without having to go through all children
 
+// Refactoring using useReducer instead of useState
+const blogReducer = (state, action) => {
+  switch (action.type) {
+    case "add_blogpost":
+      return [...state, { title: `Blog Post#${state.length + 1}` }];
+    default:
+      return state;
+  }
+};
+
 // ADDING STATE WITHIN CONTEXT
 export const BlogProvider = ({ children }) => {
-  const [blogPosts, setBlogPosts] = useState([]);
+  const [blogPosts, dispatch] = useReducer(blogReducer, []);
+  // dispatch is function used to modify state
+  const addBlogPost = () => {
+    dispatch({ type: "add_blogpost" });
+  };
+
+  //   const [blogPosts, setBlogPosts] = useState([]);
   // set or setters are used to set the value of a property. A setter gets called each time the value of the property is changed. In other words, it executes a function for each time a property used inside the setter function is changed.
 
-  const addBlogPost = () => {
-    setBlogPosts([
-      ...blogPosts,
-      { title: `Blog Post # ${blogPosts.length + 1}` },
-    ]);
-  };
+  //   const addBlogPost = () => {
+  //     setBlogPosts([
+  //       ...blogPosts,
+  //       { title: `Blog Post # ${blogPosts.length + 1}` },
+  //     ]);
+  //   };
   // any time update state variable always call setter, for the new value to use, never modify the originial vale
   // create a new array, inside new array, take all the current blog posts we have and add thme
 
   return (
-    <BlogContext.Provider value={{ data: blogPosts, addBlogPost: addBlogPost }}>
+    <BlogContext.Provider value={{ data: blogPosts, addBlogPost }}>
       {children}
     </BlogContext.Provider>
   );
 };
+//   return (
+//     <BlogContext.Provider value={{ data: blogPosts, addBlogPost }}>
+//       {children}
+//     </BlogContext.Provider>
+//   );
+// };
 
 export default BlogContext;
 
