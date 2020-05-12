@@ -27,7 +27,7 @@ export default () => {
     </BlogProvider>
   );
 };
-// passing App in as child TO BlogProvider
+// passing App in as child To BlogProvider
 
 // one requirment of app.js file is that you MUST export a react componentt
 // in order to wrap everything inside the application, rather than exporting thr createAppContainer, assign to variable
